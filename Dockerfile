@@ -9,12 +9,10 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend application
-COPY backend/ ./app/
+COPY backend/ .
 
-# Copy models
-COPY models/ ./app/models/
-
-WORKDIR /app/app
+# Copy models to the same directory as app.py
+COPY models/ ./models/
 
 # Expose port
 EXPOSE 8000

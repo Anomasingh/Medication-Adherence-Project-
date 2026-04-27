@@ -26,7 +26,24 @@ def _install_sklearn_pickle_shims():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _install_sklearn_pickle_shims()
-    model_path = os.path.join(os.path.dirname(__file__), "..", "models")
+    
+    # Support both local and Docker environments
+    app_dir = os.path.dirname(__file__)
+    possible_paths = [
+        os.path.join(app_dir, "..", "models"),  # Local development
+        os.path.join(app_dir, "models"),        # Docker environment
+        "/app/models",                          # Docker absolute path
+    ]
+    
+    model_path = None
+    for path in possible_paths:
+        if os.path.exists(path):
+            model_path = path
+            print(f"Found models at: {path}")
+            break
+    
+    if model_path is None:
+        raise RuntimeError(f"Could not find models directory. Checked: {possible_paths}")
 
     assets_to_load = [
         ("htn_model", "hypertension_model.pkl"),

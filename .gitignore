@@ -44,10 +44,6 @@ dist/
 .env.local
 .env.*.local
 
-# Models (if large)
-*.pkl
-*.joblib
-
 # OS
 .DS_Store
 Thumbs.db

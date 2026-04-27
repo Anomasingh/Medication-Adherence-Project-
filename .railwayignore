@@ -1,6 +1,0 @@
-frontend/
-node_modules/
-.git/
-.venv/
-dist/
-vercel.json

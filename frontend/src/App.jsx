@@ -15,7 +15,12 @@ import { motion } from "framer-motion";
 import jsPDF from "jspdf";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://medication-adherence-project-production-b322.up.railway.app";
+// Use environment variable if available, otherwise use production backend
+const API_BASE = import.meta.env.VITE_API_URL ? 
+  import.meta.env.VITE_API_URL : 
+  (typeof window !== 'undefined' && window.location.hostname !== 'localhost' 
+    ? 'https://medication-adherence-project-production-b322.up.railway.app'
+    : 'http://localhost:8000');
 
 const MODEL_CONFIG = {
   diabetes: {
@@ -272,12 +277,16 @@ export default function App() {
     setResult(null);
 
     try {
+      const url = `${API_BASE}${config.endpoint}`;
+      console.log('API_BASE:', API_BASE);
+      console.log('Full URL:', url);
+      
       const payload = config.features.reduce((acc, feature) => {
         acc[feature.key] = toNumber(formValues[feature.key]);
         return acc;
       }, {});
 
-      const response = await fetch(`${API_BASE}${config.endpoint}`, {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

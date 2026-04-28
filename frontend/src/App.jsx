@@ -15,7 +15,7 @@ import { motion } from "framer-motion";
 import jsPDF from "jspdf";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const API_BASE = import.meta.env.VITE_API_URL || "https://medication-adherence-project-production-b322.up.railway.app";
 
 const MODEL_CONFIG = {
   diabetes: {
@@ -296,7 +296,7 @@ export default function App() {
         featuresUsed: data?.features_used ?? []
       });
     } catch {
-      setError("Unable to reach the API right now. Please confirm the backend is running on http://127.0.0.1:8000.");
+      setError("Unable to reach the API. Please check if the backend is running.");
     } finally {
       setLoading(false);
     }
